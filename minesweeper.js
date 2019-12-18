@@ -7,6 +7,7 @@ var board = {
       row:0, 
       col:0,
       isMine: false,
+      isMarked: true,
       hidden: true,
       surroundingMines: []
     },
@@ -14,6 +15,7 @@ var board = {
       row:1, 
       col:0,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     }, 
@@ -21,6 +23,7 @@ var board = {
       row:2, 
       col:0,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     }, 
@@ -28,6 +31,7 @@ var board = {
       row:0, 
       col:1,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     },
@@ -35,6 +39,7 @@ var board = {
       row:1,
       col:1,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     },
@@ -42,6 +47,7 @@ var board = {
       row:2,
       col:1,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     },
@@ -49,6 +55,7 @@ var board = {
       row:0,
       col:2,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     },
@@ -56,6 +63,7 @@ var board = {
       row:1,
       col:2,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     },
@@ -63,6 +71,7 @@ var board = {
       row:2,
       col:2,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     }
@@ -73,6 +82,7 @@ var board = {
       row:4, 
       col:4,
       isMine: false,
+      isMarked: false,
       hidden: true,
       surroundingMines: []
     }
@@ -84,6 +94,7 @@ board.cells = [
     row:0, 
     col:0,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
@@ -91,6 +102,7 @@ board.cells = [
     row:1, 
     col:0,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   }, 
@@ -98,6 +110,7 @@ board.cells = [
     row:2, 
     col:0,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   }, 
@@ -105,6 +118,7 @@ board.cells = [
     row:0, 
     col:1,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
@@ -112,6 +126,7 @@ board.cells = [
     row:1,
     col:1,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
@@ -119,6 +134,7 @@ board.cells = [
     row:2,
     col:1,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
@@ -126,20 +142,23 @@ board.cells = [
     row:0,
     col:2,
     isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
   { 
     row:1,
     col:2,
-    isMine: false,
+    isMine: true,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   },
   {
     row:2,
     col:2,
-    isMine: true,
+    isMine: false,
+    isMarked: false,
     hidden: true,
     surroundingMines: []
   }
@@ -149,22 +168,35 @@ board.cells = [
 function startGame () {
   for (i=0; i < board.cells.length; i++) {
     board.cells[i].surroundingMines = countSurroundingMines(i)
+    document.addEventListener ('click', checkForWin);
+    document.addEventListener ('contextmenu', checkForWin);
   }
   
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
+  
+ 
 }
 
 // Define this function to look for a win condition:
-//
+//loop through all board.cells
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
-function checkForWin () {}
-
+function checkForWin () {
+  for (i=0; i < board.cells.length; i++) {
+    if (board.cells[i].isMine == true && board.cells[i].isMarked == false) {
+    return; 
+    }
+    if (board.cells[i].isMine == false && board.cells[i].hidden ==true) {
+    return;
+    }
+  }
   // You can use this function call to declare a winner (once you've
   // detected that they've won, that is!)
-  //   lib.displayMessage('You win!')
+lib.displayMessage('You win!');
+}
 
+checkForWin ()
 
 // Define this function to count the number of mines around the cell
 // (there could be as many as 8). You don't have to get the surrounding
